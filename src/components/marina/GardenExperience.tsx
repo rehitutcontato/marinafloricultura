@@ -374,7 +374,7 @@ export function GardenExperience() {
               
               <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                 <a
-                  href="https://www.google.com/maps/dir//Rua+Florindo+Cibim,+331+-+Jardim+Sao+Paulo,+Americana+-+SP,+13466-410/@-22.7374,-47.3337,17z"
+                  href="https://www.google.com/maps/dir//Marina+Flores,+R.+Florindo+Cibin,+331+-+Jardim+Sao+Paulo,+Americana+-+SP,+13465-230/@-22.7374,-47.3337,17z/data=!4m8!4m7!1m0!1m5!1m1!1s0x94c89bd4210d3247:0xc34a5d53b614269f!2m2!1d-47.3361887!2d-22.7482764?entry=ttu&g_ep=EgoyMDI2MDQwNS4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#9C1C2B] hover:bg-[#C4253A] text-white font-medium transition-all hover:shadow-[0_8px_32px_rgba(156,28,43,0.4)]"
@@ -446,7 +446,7 @@ export function GardenExperience() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="https://www.google.com/maps/place/Rua+Florindo+Cibim,+331+-+Jardim+Sao+Paulo,+Americana+-+SP,+13466-410/@-22.7374,-47.3337,17z"
+                href="https://www.google.com/maps/dir//Marina+Flores,+R.+Florindo+Cibin,+331+-+Jardim+Sao+Paulo,+Americana+-+SP,+13465-230/@-22.7374,-47.3337,17z/data=!4m8!4m7!1m0!1m5!1m1!1s0x94c89bd4210d3247:0xc34a5d53b614269f!2m2!1d-47.3361887!2d-22.7482764?entry=ttu&g_ep=EgoyMDI2MDQwNS4wIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#9C1C2B] hover:bg-[#C4253A] text-white font-medium transition-all hover:shadow-[0_8px_32px_rgba(156,28,43,0.4)] hover:-translate-y-1"
