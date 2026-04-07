@@ -8,7 +8,7 @@ import { TeamCarousel } from './components/marina/TeamCarousel';
 import { Stats } from './components/marina/Stats';
 import { CatalogoCTA } from './components/marina/CatalogoCTA';
 import { OrcamentoSection } from './components/marina/OrcamentoSection';
-import { FinalCTA } from './components/marina/FinalCTA';
+import { GardenExperience } from './components/marina/GardenExperience';
 import { Footer } from './components/marina/Footer';
 import { ProductGallery } from './components/marina/ProductGallery';
 import { CustomCursor } from './components/marina/CustomCursor';
@@ -39,7 +39,7 @@ export default function App() {
         <Stats />
         <CatalogoCTA />
         <OrcamentoSection />
-        <FinalCTA />
+        <GardenExperience />
       </main>
       
       <Footer />

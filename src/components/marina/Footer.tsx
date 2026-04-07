@@ -14,7 +14,7 @@ export function Footer() {
             <a href="https://instagram.com/marinafloricultura" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all">
               <Instagram className="w-4 h-4" />
             </a>
-            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all">
+            <a href="https://www.facebook.com/marinafloricultura/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all">
               <Facebook className="w-4 h-4" />
             </a>
           </div>
