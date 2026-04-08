@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { MapPin, Navigation, ArrowRight, Play, Pause, X, Flower2, Gift, Leaf, ChevronLeft } from 'lucide-react';
 
 interface GalleryItem {
@@ -74,6 +74,46 @@ const videos = [
   { id: 'garden2', src: '/garden2.mp4', title: 'Tour pelo Garden' },
   { id: 'garden3', src: '/garden3.mp4', title: 'Nosso Espaço' }
 ];
+
+// Componente MagneticButton - Efeito de ímã no hover
+function MagneticButton({ children, className, ...props }: { children: React.ReactNode; className?: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 150, damping: 15 });
+  const springY = useSpring(y, { stiffness: 150, damping: 15 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distX = e.clientX - centerX;
+    const distY = e.clientY - centerY;
+    
+    // Magnetic effect - max 15px displacement
+    x.set(distX * 0.3);
+    y.set(distY * 0.3);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.a
+      ref={ref}
+      className={className}
+      style={{ x: springX, y: springY }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      {...props}
+    >
+      {children}
+    </motion.a>
+  );
+}
 
 function VideoCard({ video }: { video: typeof videos[0] }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -373,7 +413,7 @@ export function GardenExperience() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-                <a
+                <MagneticButton
                   href="https://www.google.com/maps/dir//Marina+Flores,+R.+Florindo+Cibin,+331+-+Jardim+Sao+Paulo,+Americana+-+SP,+13465-230/@-22.7374,-47.3337,17z/data=!4m8!4m7!1m0!1m5!1m1!1s0x94c89bd4210d3247:0xc34a5d53b614269f!2m2!1d-47.3361887!2d-22.7482764?entry=ttu&g_ep=EgoyMDI2MDQwNS4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -381,9 +421,9 @@ export function GardenExperience() {
                 >
                   <Navigation className="w-4 h-4" />
                   Como Chegar
-                </a>
+                </MagneticButton>
                 
-                <a
+                <MagneticButton
                   href="https://wa.me/551934622571"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -391,7 +431,7 @@ export function GardenExperience() {
                 >
                   Agendar Visita
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </MagneticButton>
               </div>
             </motion.div>
             
@@ -445,7 +485,7 @@ export function GardenExperience() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <MagneticButton
                 href="https://www.google.com/maps/dir//Marina+Flores,+R.+Florindo+Cibin,+331+-+Jardim+Sao+Paulo,+Americana+-+SP,+13465-230/@-22.7374,-47.3337,17z/data=!4m8!4m7!1m0!1m5!1m1!1s0x94c89bd4210d3247:0xc34a5d53b614269f!2m2!1d-47.3361887!2d-22.7482764?entry=ttu&g_ep=EgoyMDI2MDQwNS4wIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -453,15 +493,15 @@ export function GardenExperience() {
               >
                 <MapPin className="w-5 h-5" />
                 Ver no Google Maps
-              </a>
+              </MagneticButton>
               
-              <a
+              <MagneticButton
                 href="tel:+551934622571"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/20 hover:border-white/40 text-white font-medium transition-all hover:bg-white/5"
               >
                 Ligar Agora
                 <ArrowRight className="w-5 h-5" />
-              </a>
+              </MagneticButton>
             </div>
           </motion.div>
         </div>

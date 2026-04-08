@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Flower2, Sparkles } from 'lucide-react';
+import { Flower2, Sparkles, ChevronLeft } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -89,79 +89,149 @@ function ProductCard({ product, index, onClick }: { product: Product; index: num
   );
 }
 
+// Modal Aprimorado com UX igual ao GardenExperience
 function ProductModal({ product, onClose }: { product: Product; onClose: () => void }) {
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  // Tecla ESC fecha
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  // Swipe handlers para mobile
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientY);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientY);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isSwipeDown = distance < -minSwipeDistance;
+    if (isSwipeDown) {
+      onClose();
+    }
+  };
+
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm"
         onClick={onClose}
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative max-w-4xl w-full bg-[#0A0A0A] rounded-3xl overflow-hidden border border-white/10"
-          onClick={(e) => e.stopPropagation()}
+        {/* Botão Voltar - Topo */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          className="fixed top-0 left-0 right-0 z-[10000] flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-b from-black/80 to-transparent text-white/80 hover:text-white transition-colors"
         >
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
+          <ChevronLeft className="w-5 h-5" />
+          <span className="text-sm font-medium tracking-wide">Voltar</span>
+        </button>
+
+        {/* Layout com áreas clicáveis nas laterais */}
+        <div className="fixed inset-0 flex">
+          {/* Lado esquerdo - clique fecha (desktop) */}
+          <div className="hidden md:flex w-[10%] h-full items-center justify-center cursor-pointer hover:bg-white/5 transition-colors" onClick={onClose}>
+            <ChevronLeft className="w-8 h-8 text-white/40" />
+          </div>
           
-          <div className="grid md:grid-cols-2">
-            {/* Image Side */}
-            <div className="relative aspect-square md:aspect-auto">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-              <div 
-                className="absolute inset-0 opacity-30"
-                style={{ background: `linear-gradient(135deg, ${product.color}40 0%, transparent 70%)` }}
-              />
-            </div>
-            
-            {/* Content Side */}
-            <div className="p-8 md:p-10 flex flex-col justify-center">
-              <div 
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-medium text-white w-fit mb-4"
-                style={{ backgroundColor: product.color }}
-              >
-                {product.tag === "Exclusividade" ? <Sparkles className="w-3 h-3" /> : <Flower2 className="w-3 h-3" />}
-                {product.tag}
-              </div>
-              
-              <h2 className="font-playfair text-3xl md:text-4xl text-white mb-2">{product.name}</h2>
-              <p className="font-inter text-[var(--marina-gold)] text-sm italic mb-6">{product.scientificName}</p>
-              
-              <p className="font-inter text-gray-300 text-base leading-relaxed mb-8">
-                {product.description}
-              </p>
-              
-              <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                <div>
-                  <p className="font-inter text-gray-500 text-sm mb-1">A partir de</p>
-                  <p className="font-playfair text-3xl text-white">{product.price}</p>
+          {/* Centro - Conteúdo */}
+          <div 
+            className="flex-1 flex items-center justify-center px-4 pt-16 pb-8"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="relative max-w-4xl w-full bg-[#0A0A0A] rounded-3xl overflow-hidden border border-white/10"
+            >
+              <div className="grid md:grid-cols-2">
+                {/* Image Side */}
+                <div className="relative aspect-square md:aspect-auto">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div 
+                    className="absolute inset-0 opacity-30"
+                    style={{ background: `linear-gradient(135deg, ${product.color}40 0%, transparent 70%)` }}
+                  />
                 </div>
                 
-                <a
-                  href="#orcamento"
-                  onClick={onClose}
-                  className="px-6 py-3 rounded-full bg-[#9C1C2B] hover:bg-[#C4253A] text-white font-medium text-sm transition-all hover:shadow-[0_8px_32px_rgba(156,28,43,0.4)] hover:-translate-y-0.5"
-                >
-                  Solicitar Orçamento
-                </a>
+                {/* Content Side */}
+                <div className="p-8 md:p-10 flex flex-col justify-center">
+                  <div 
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-medium text-white w-fit mb-4"
+                    style={{ backgroundColor: product.color }}
+                  >
+                    {product.tag === "Exclusividade" ? <Sparkles className="w-3 h-3" /> : <Flower2 className="w-3 h-3" />}
+                    {product.tag}
+                  </div>
+                  
+                  <h2 className="font-playfair text-3xl md:text-4xl text-white mb-2">{product.name}</h2>
+                  <p className="font-inter text-[var(--marina-gold)] text-sm italic mb-6">{product.scientificName}</p>
+                  
+                  <p className="font-inter text-gray-300 text-base leading-relaxed mb-8">
+                    {product.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between pt-6 border-t border-white/10">
+                    <div>
+                      <p className="font-inter text-gray-500 text-sm mb-1">A partir de</p>
+                      <p className="font-playfair text-3xl text-white">{product.price}</p>
+                    </div>
+                    
+                    <a
+                      href="#orcamento"
+                      onClick={onClose}
+                      className="px-6 py-3 rounded-full bg-[#9C1C2B] hover:bg-[#C4253A] text-white font-medium text-sm transition-all hover:shadow-[0_8px_32px_rgba(156,28,43,0.4)] hover:-translate-y-0.5"
+                    >
+                      Solicitar Orçamento
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
+              
+              {/* Hint para mobile */}
+              <p className="md:hidden absolute bottom-2 left-0 right-0 text-center text-white/40 text-xs">
+                <ChevronLeft className="w-4 h-4 inline rotate-[-90deg] mr-1" />
+                Arraste para baixo para voltar
+              </p>
+            </motion.div>
           </div>
-        </motion.div>
+          
+          {/* Lado direito - clique fecha (desktop) */}
+          <div className="hidden md:flex w-[10%] h-full items-center justify-center cursor-pointer hover:bg-white/5 transition-colors" onClick={onClose}>
+            <ChevronLeft className="w-8 h-8 text-white/40 rotate-180" />
+          </div>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

@@ -22,20 +22,6 @@ const team = [
     quote: "Quando cheguei, a Marina Flores só tinha dois funcionários. Comecei como balconista e vi a empresa crescer, ao longo dos anos. Depois de algum tempo, soube de uma vaga para motorista e me candidatei. Já conhecia bem a cidade e deu certo. A principal razão para a minha permanência há 18 anos é a humildade da diretoria, que sempre nos trata muito bem e nos ajuda. Por sermos valorizados, também nos sentimos dispostos a dar o nosso melhor pela empresa.",
     image: "/ronaldoaparecido.jpg",
     years: 18
-  },
-  {
-    name: "Letícia Kadatz",
-    role: "Supervisora de Balcão",
-    quote: "Saí e fui novamente contratada, e ainda consegui uma promoção. Gosto muito de trabalhar aqui.",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&q=80",
-    years: 5
-  },
-  {
-    name: "Gabriela Murayama",
-    role: "Arquiteta e Paisagista",
-    quote: "Especializada em paisagismo contemporâneo pela França, trazendo novas tendências ao mercado brasileiro.",
-    image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=800&q=80",
-    years: 8
   }
 ];
 
